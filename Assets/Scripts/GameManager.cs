@@ -19,7 +19,9 @@ public class GameManager : MonoBehaviour
 
     public bool isGameOver { get; private set; }
 
-    public float[] skill_speed = new float[] { 24, 24, 24, 24 };
+    public float[] skill_speed = new float[] { 15000, };
+    public float[] skill_distance = new float[] { 7000, };
+    public float[] skill_cool = new float[] { 3, };
     // 미니언 골드
     // 처음 플레이어 체력, 공격력
     // 쿨타임
