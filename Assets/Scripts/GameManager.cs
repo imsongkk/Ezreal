@@ -15,15 +15,18 @@ public class GameManager : MonoBehaviour
             return m_instance;
         }
     }
+
     private static GameManager m_instance;
 
     public bool isGameOver { get; private set; }
-
-    public float[] skill_speed = new float[] { 1000f, 1000f, 1000f, 1000f };
-    public float[] skill_distance = new float[] { 600,600,600,600};
+    public int userSkillCount = 6;
+    public string[] keyList = new string[] { "q", "w", "e", "r", "d", "f" };
+    public float[] skill_speed = new float[] { 1500f, 1000f, 1000f, 1000f };
+    public float[] skill_distance = new float[] { 600,600,400,600,600,600};
     public float[] skill_cool = new float[] { 3, 3, 3, 3};
     public float player_speed = 300f;
-    public float player_radius = 24f;
+    public float player_radius = 50f;
+    //public Dictionary<int, bool> skillDict;
 
     // 미니언 골드
     // 처음 플레이어 체력, 공격력
@@ -38,15 +41,14 @@ public class GameManager : MonoBehaviour
         
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         m_instance = this;
+        isGameOver = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    void EndGame()
     {
-        
+        isGameOver = true;
     }
 }
