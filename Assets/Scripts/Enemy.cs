@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestroyZone : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
-    public int a;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,10 +14,5 @@ public class DestroyZone : MonoBehaviour
     void Update()
     {
         
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        Destroy(other.gameObject);
     }
 }

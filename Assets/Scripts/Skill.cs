@@ -32,15 +32,26 @@ public class Skill : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transform.position += Time.deltaTime * gameObject.transform.rotation.eulerAngles;
-        //print(dir);
-        //print(GameManager.instance.skill_speed[0]);
-        //print(speed);
-        if (Vector2.Distance(transform.position, originPos) <= distance)
-            transform.position += (Vector3)(Time.deltaTime * dir) * speed;
-        else
-            Destroy(gameObject);
-        //Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        //rb.AddForce(dir);
+        if (type == 0)
+        {
+            if (Vector2.Distance(transform.position, originPos) <= distance)
+                transform.position += (Vector3)(Time.deltaTime * dir) * speed;
+            else
+                Destroy(gameObject);
+        }
+        else if(type == 1)
+        {
+
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag != "Enemy")
+            return;
+        Destroy(collision.gameObject);
+        // TODO
+        // 적에게 데미지 입히는것 구현
+        Destroy(gameObject);
     }
 }
