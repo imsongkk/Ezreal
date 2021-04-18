@@ -46,9 +46,9 @@ public class ConstantManager : MonoBehaviour
         }
         m_instance = this;
         skillInfo = new SkillInfo[userKeyCount];
-        skillInfo[0] = new SkillInfo("q", 1500, 600, 3, true);
+        skillInfo[0] = new SkillInfo("q", 1500, 600, 0.5f, true);
         skillInfo[1] = new SkillInfo("w", 1500, 600, 3, true);
-        skillInfo[2] = new SkillInfo("e", 0   , 300, 3, false);
+        skillInfo[2] = new SkillInfo("e", 0   , 400, 3, false);
         skillInfo[3] = new SkillInfo("r", 1500, 600, 3, true);
         skillInfo[4] = new SkillInfo("d", 1500, 600, 3, false);
         skillInfo[5] = new SkillInfo("f", 1500, 600, 3, false);

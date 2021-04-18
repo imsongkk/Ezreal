@@ -41,14 +41,8 @@ public class Skill : MonoBehaviour
             Vector2 skillPos = getNearPos(player.transform.position, (playerInput.cursorPos - (Vector2)player.transform.position).normalized, (playerInput.cursorPos - (Vector2)player.transform.position).magnitude >=
                 skillInfo[index].distance ? skillInfo[index].distance : (playerInput.cursorPos - (Vector2)player.transform.position).magnitude, GameManager.instance.playerInfo.radius);
             if (playerInput.movePos == (Vector2)player.transform.position) // 정지 상태
-            {
-                player.transform.position = skillPos;
                 playerInput.movePos = skillPos;
-            }
-            else
-                player.transform.position = skillPos;
-            //playerInput.movePos = player.transform.position;
-            //if (playerInput.movePos == playerInput.cursorPos)
+            player.transform.position = skillPos;
             Destroy(gameObject);
         }
     }

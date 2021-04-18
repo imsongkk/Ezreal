@@ -8,17 +8,24 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private Rigidbody2D prb;
     public GameManager.PlayerInfo info;
+    private Animator animator;
 
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
         prb = GetComponent<Rigidbody2D>();
         info = GameManager.instance.playerInfo;
+        animator = GetComponent<Animator>();
     }
 
 
     void FixedUpdate()
     {
+        if (playerInput.movePos == prb.position)
+            animator.SetBool("Stopped", true);
+        //Vector2 dir = playerInput.movePos - prb.position;
+        //print(Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+        //animator.transform.rotation *= Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
         prb.position = Vector2.MoveTowards(prb.position, playerInput.movePos, info.speed*Time.deltaTime);
     }
 }

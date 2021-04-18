@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // has rigidbody, collider without trigger
+    Vector2 dir;
+    float speed = 200f; // 임의 설정
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        dir = (Vector2)GameObject.FindGameObjectWithTag("Player").transform.position;
+        transform.position = Vector2.MoveTowards(transform.position, dir, speed * Time.deltaTime);
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.collider.name == "Player")
+        {
+            GameManager.instance.EndGame();
+        }
     }
 }

@@ -35,15 +35,11 @@ public class GameManager : MonoBehaviour
     public PlayerInfo playerInfo;
 
     public bool isGameOver { get; private set; }
-    /*
-    public int userSkillCount = 6;
-    public string[] keyList = new string[] { "q", "w", "e", "r", "d", "f" };
-    public float[] skill_speed = new float[] { 1500f, 1000f, 1000f, 1000f };
-    public float[] skill_distance = new float[] { 600,600,400,600,600,600};
-    public float[] skill_cool = new float[] { 3, 3, 3, 3};
-    public float player_speed = 300f;
-    public float player_radius = 50f;
-    */
+    public int clickCount = 0;
+    public float startTime = 0f;
+    public int APM = 0;
+    public int round = 1; // 라운드
+    public float frequencyEnemySpawn = 3f; // 적 생성 주기
 
     // 미니언 골드
     // 처음 플레이어 체력, 공격력
@@ -70,8 +66,15 @@ public class GameManager : MonoBehaviour
         isGameOver = false;
     }
 
-    void EndGame()
+    public void EndGame()
     {
         isGameOver = true;
+        APM = GetAPM(Time.time - startTime);
+        startTime = Time.time;
+    }
+
+    public int GetAPM(float duration)
+    {
+        return (int)(clickCount / duration) * 60;
     }
 }
