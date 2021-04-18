@@ -10,14 +10,23 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.instance.isGameOver)
+            return;
         dir = (Vector2)GameObject.FindGameObjectWithTag("Player").transform.position;
         transform.position = Vector2.MoveTowards(transform.position, dir, speed * Time.deltaTime);
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.collider.name == "Player")
+        if (collision.name == "Player")
         {
             GameManager.instance.EndGame();
         }
+    }
+
+    private void OnDestroy()
+    {
+        if(GameManager.instance != null)
+            GameManager.instance.AddScore();
     }
 }

@@ -28,6 +28,7 @@ public class PlayerInput : MonoBehaviour
         // 게임오버 상태이면 입력을 받지 않는다.
         if (GameManager.instance != null && GameManager.instance.isGameOver)
         {
+            movePos = transform.position;
             return;
         }
         // 현재 마우스 커서의 위치를 계속 갱신

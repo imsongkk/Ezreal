@@ -20,6 +20,6 @@ public class EnemySpawner : MonoBehaviour
 
     private bool CanSpawn()
     {
-        return Time.time - lastSpawnTime >= GameManager.instance.frequencyEnemySpawn;
+        return !GameManager.instance.isGameOver && Time.time - lastSpawnTime >= GameManager.instance.frequencyEnemySpawn;
     }
 }
