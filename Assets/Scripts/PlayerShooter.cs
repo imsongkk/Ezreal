@@ -4,21 +4,24 @@ using UnityEngine;
 
 public class PlayerShooter : MonoBehaviour
 {
-    private float[] lastShootTime;
     private PlayerInput playerInput;
-    public Transform skillPivot; // 스킬 발사 위치
-    public GameObject[] skillList = new GameObject[6];
+    //public Transform skillPivot; // 스킬 발사 위치
+    public GameObject[] skillList = new GameObject[6]; 
+    // TODO
+    // 6을 변수로 바꾸고싶은데 어떻게?
+    // 1. 프리팹을 드래그로 불러오는게 아닌 스크립트에서 할당하면 일단 되긴 됨
     public GameObject curSkill;
     public Vector2 dir;
+    private float[] lastShootTime;
+    public int userKeyCount;
     public int curSkillIndex = 0;
     public bool isShootable = true;
-    // ###
-    // 6말고 변수로 바꾸고 싶은데 어떻게?
 
     private void Start()
     {
         playerInput = GetComponent<PlayerInput>();
-        lastShootTime = new float[GameManager.instance.keyList.Length];
+        userKeyCount = ConstantManager.instance.userKeyCount;
+        lastShootTime = new float[userKeyCount];
     }
 
     private void Update()
@@ -40,7 +43,7 @@ public class PlayerShooter : MonoBehaviour
 
     private bool CanShoot(int type)
     {
-        if (lastShootTime[type] == 0 || Time.time - lastShootTime[type] >= GameManager.instance.skill_cool[type])
+        if (lastShootTime[type] == 0 || Time.time - lastShootTime[type] >= ConstantManager.instance.skillInfo[type].cool)
             return true;
         return false;
     }

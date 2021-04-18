@@ -7,24 +7,18 @@ public class PlayerController : MonoBehaviour
 {
     private PlayerInput playerInput;
     private Rigidbody2D prb;
-
-    private float speed
-    {
-        get
-        {
-            return GameManager.instance.player_speed;
-        }
-    }
+    public GameManager.PlayerInfo info;
 
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
         prb = GetComponent<Rigidbody2D>();
+        info = GameManager.instance.playerInfo;
     }
 
 
     void FixedUpdate()
     {
-        prb.position = Vector2.MoveTowards(prb.position, playerInput.movePos, speed*Time.deltaTime);
+        prb.position = Vector2.MoveTowards(prb.position, playerInput.movePos, info.speed*Time.deltaTime);
     }
 }

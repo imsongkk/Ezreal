@@ -7,15 +7,13 @@ public class Skill : MonoBehaviour
     public Vector2 dir { get; set; }
     public int sindex { get; set; } // 스킬의 순서
     public Vector2 originPos { get; set; }
-    private bool shootable = false;
-    private float speed;
-    private float distance;
     private enum SkillType
     {
         Q = 0,
         W,E,R,D,F
     }
     public PlayerShooter ps;
+    public ConstantManager.SkillInfo []skillInfo;
 
     private void Start()
     {
@@ -23,14 +21,12 @@ public class Skill : MonoBehaviour
         ps = GameObject.Find("Player").GetComponent<PlayerShooter>();
         this.dir = ps.dir;
         this.sindex = ps.curSkillIndex;
-        this.shootable = sindex == 0 ? true : false; // 비약적
-        speed = GameManager.instance.skill_speed[sindex];
-        distance = GameManager.instance.skill_distance[sindex];
+        skillInfo = ConstantManager.instance.skillInfo;
     }
 
     private void Update()
     {
-        if (!shootable)
+        if (!skillInfo[sindex].shootable)
             FireNothing(sindex);
         else
             FireSomething(sindex);
@@ -42,14 +38,17 @@ public class Skill : MonoBehaviour
         {
             GameObject player = GameObject.Find("Player");
             PlayerInput playerInput = player.GetComponent<PlayerInput>();
-            player.transform.position = getNearPos(player.transform.position, (playerInput.cursorPos - (Vector2)player.transform.position).normalized, (playerInput.cursorPos - (Vector2)player.transform.position).magnitude >=
-                distance ? distance : (playerInput.cursorPos - (Vector2)player.transform.position).magnitude, GameManager.instance.player_radius);
-            // 클릭한 곳으로 스킬을 쓸 때
-            if (playerInput.movePos == playerInput.cursorPos)
-                playerInput.movePos = player.transform.position;
-            // 클릭하지 않고 커서를 올려둔 곳으로 스킬을 쓸 때
+            Vector2 skillPos = getNearPos(player.transform.position, (playerInput.cursorPos - (Vector2)player.transform.position).normalized, (playerInput.cursorPos - (Vector2)player.transform.position).magnitude >=
+                skillInfo[index].distance ? skillInfo[index].distance : (playerInput.cursorPos - (Vector2)player.transform.position).magnitude, GameManager.instance.playerInfo.radius);
+            if (playerInput.movePos == (Vector2)player.transform.position) // 정지 상태
+            {
+                player.transform.position = skillPos;
+                playerInput.movePos = skillPos;
+            }
             else
-                playerInput.movePos = playerInput.cursorPos;
+                player.transform.position = skillPos;
+            //playerInput.movePos = player.transform.position;
+            //if (playerInput.movePos == playerInput.cursorPos)
             Destroy(gameObject);
         }
     }
@@ -58,8 +57,8 @@ public class Skill : MonoBehaviour
     {
         if (index == (int)SkillType.Q)
         {
-            if (Vector2.Distance(transform.position, originPos) <= distance)
-                transform.position += (Vector3)(Time.deltaTime * dir) * speed;
+            if (Vector2.Distance(transform.position, originPos) <= skillInfo[index].distance)
+                transform.position += (Vector3)(Time.deltaTime * dir) * skillInfo[index].speed;
             else
                 Destroy(gameObject);
         }
