@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerShooter : MonoBehaviour
 {
     private PlayerInput playerInput;
+    private PlayerController playerController;
     //public Transform skillPivot; // 스킬 발사 위치
     public GameObject[] skillList = new GameObject[6]; 
     // TODO
@@ -20,6 +21,7 @@ public class PlayerShooter : MonoBehaviour
     private void Start()
     {
         playerInput = GetComponent<PlayerInput>();
+        playerController = GetComponent<PlayerController>();
         userKeyCount = ConstantManager.instance.userKeyCount;
         lastShootTime = new float[userKeyCount];
     }
@@ -32,12 +34,14 @@ public class PlayerShooter : MonoBehaviour
             lastShootTime[0] = Time.time;
             curSkill = Instantiate(skillList[0], transform.position, Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90));
             curSkillIndex = 0;
+            playerController.Rotate(dir);
         }
         if(playerInput.buttonDown[2] && CanShoot(2))
         {
             lastShootTime[2] = Time.time;
             curSkill = Instantiate(skillList[2], transform.position, Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90));
             curSkillIndex = 2;
+            playerController.Rotate(dir);
         }
     }
 

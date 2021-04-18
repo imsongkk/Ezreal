@@ -35,10 +35,12 @@ public class GameManager : MonoBehaviour
     public PlayerInfo playerInfo;
     public GameObject screenUI;
     public GameObject gameoverUI;
+    public GameObject pauseUI;
     public Text scoreText;
     public Text apmText;
 
     public bool isGameOver { get; private set; }
+    public bool isPaused { get; private set; }
     public int clickCount = 0;
     public float startTime = 0f;
     public int APM = 0;
@@ -99,6 +101,26 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void GetPauseUI()
+    {
+        if (!isPaused)
+        {
+            pauseUI.SetActive(true);
+            isPaused = true;
+            Time.timeScale = 0;
+        }
+    }
+
+    public void ExitPauseUI()
+    {
+        if (isPaused)
+        {
+            pauseUI.SetActive(false);
+            isPaused = false;
+            Time.timeScale = 1;
+        }
     }
 
     private void GetGameoverUI()

@@ -9,8 +9,10 @@ public class PlayerInput : MonoBehaviour
     public Vector2 rotateDir; // 플레이어가 바라보고 있는 방향벡터
     public int userKeyCount;
     public bool[] buttonDown;
+    public Quaternion rotateQ = Quaternion.identity;
     private Camera cam;
     private Animator animator;
+    private PlayerController playerController;
 
     void Start()
     {
@@ -19,12 +21,15 @@ public class PlayerInput : MonoBehaviour
         userKeyCount = ConstantManager.instance.userKeyCount;
         buttonDown = new bool[userKeyCount];
         animator = GetComponent<Animator>();
+        playerController = GetComponent<PlayerController>();
         rotateDir = new Vector2(0, -1);
     }
 
     void Update()
     {
         int clickCount = 0;
+        //rotateQ = Quaternion.Euler(0, 0, Vector2.SignedAngle(rotateDir, cursorPos));
+
         // 게임오버 상태이면 입력을 받지 않는다.
         if (GameManager.instance != null && GameManager.instance.isGameOver)
         {
@@ -47,8 +52,10 @@ public class PlayerInput : MonoBehaviour
             movePos = cursorPos;
             animator.SetBool("Stopped", false);
             Vector2 dir = movePos - (Vector2)transform.position;
-            animator.transform.rotation *= Quaternion.Euler(0, 0, Vector2.SignedAngle(rotateDir, dir));
-            rotateDir = dir;
+            //rotateQ = Quaternion.Euler(0, 0, Vector2.SignedAngle(rotateDir, dir));
+            playerController.Rotate(dir);
+            //rotateDir = dir;
+            //animator.transform.rotation *= Quaternion.Euler(0, 0, Vector2.SignedAngle(rotateDir, dir));
             clickCount++;
         }
         if(Input.GetMouseButton(1)) // 드래그까지 포함
@@ -67,8 +74,19 @@ public class PlayerInput : MonoBehaviour
             movePos = transform.position;
         }
 
-
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!GameManager.instance.isPaused)
+                GameManager.instance.GetPauseUI();
+            else
+                GameManager.instance.ExitPauseUI();
+        }
 
         GameManager.instance.clickCount += clickCount;
+    }
+
+    public void Rotate()
+    {
+
     }
 }
