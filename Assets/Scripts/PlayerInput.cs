@@ -33,6 +33,7 @@ public class PlayerInput : MonoBehaviour
         // 게임오버 상태이면 입력을 받지 않는다.
         if (GameManager.instance != null && GameManager.instance.isGameOver)
         {
+            print("GAMEOVER");
             movePos = transform.position;
             return;
         }

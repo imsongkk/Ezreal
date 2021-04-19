@@ -36,8 +36,12 @@ public class GameManager : MonoBehaviour
     public GameObject screenUI;
     public GameObject gameoverUI;
     public GameObject pauseUI;
+    public GameObject playButton;
+    public GameObject pauseButton;
+
     public Text scoreText;
     public Text apmText;
+    public Text highScoreText;
 
     public bool isGameOver { get; private set; }
     public bool isPaused { get; private set; }
@@ -47,6 +51,7 @@ public class GameManager : MonoBehaviour
     public int round = 1; // 라운드
     public float frequencyEnemySpawn = 3f; // 적 생성 주기
     public int cs = 0;
+    private int highScore;
 
     // 미니언 골드
     // 처음 플레이어 체력, 공격력
@@ -59,6 +64,7 @@ public class GameManager : MonoBehaviour
         }
         SetPlayer("Ezreal");
         scoreText = screenUI.GetComponentInChildren<Text>();
+        highScore = PlayerPrefs.GetInt("HighScore");
     }
 
     void SetPlayer(string champName) // UI에서 champName을 받아옴
@@ -81,6 +87,8 @@ public class GameManager : MonoBehaviour
             APM = GetAPM(Time.time - startTime);
             scoreText.text = $"Creep Score : {cs}";
             apmText.text = $"APM : {APM}";
+            //frequencyEnemySpawn -= 0.1f * Time.deltaTime;
+            //print(frequencyEnemySpawn);
             // TODO
             // 스킬 쿨타임 보여주기
         }
@@ -92,10 +100,25 @@ public class GameManager : MonoBehaviour
             cs++;
     }
 
-    public void EndGame()
+    public void EndGame() // 내부에서 플레이어 사망
     {
         isGameOver = true;
         GetGameoverUI();
+    }
+
+    public void ExitGame() // 유저가 게임 종료
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit() // 어플리케이션 종료
+        #endif
+    }
+    
+    public void GoMainMenu()
+    {
+        ExitPauseUI();
+        SceneManager.LoadScene("First");
     }
 
     public void RestartGame()
@@ -108,6 +131,8 @@ public class GameManager : MonoBehaviour
         if (!isPaused)
         {
             pauseUI.SetActive(true);
+            pauseButton.SetActive(false);
+            playButton.SetActive(true);
             isPaused = true;
             Time.timeScale = 0;
         }
@@ -118,6 +143,8 @@ public class GameManager : MonoBehaviour
         if (isPaused)
         {
             pauseUI.SetActive(false);
+            pauseButton.SetActive(true);
+            playButton.SetActive(false);
             isPaused = false;
             Time.timeScale = 1;
         }
@@ -134,6 +161,8 @@ public class GameManager : MonoBehaviour
                 apmText = text[i];
         }
         apmText.text = $"APM : {APM}";
+        PlayerPrefs.SetInt("HighScore", cs >= highScore ? cs : highScore);
+        highScoreText.text = $"HIGH SCORE : {PlayerPrefs.GetInt("HighScore")}";
     }
 
     public int GetAPM(float duration)
